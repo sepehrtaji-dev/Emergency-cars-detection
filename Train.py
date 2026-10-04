@@ -1,17 +1,15 @@
 import argparse
 import time
 from pathlib import Path
-
 from rich.console import Console
 from rich.table import Table
 from rich.panel import Panel
-from rich.progress import Progress, SpinnerColumn, BarColumn, TextColumn, TimeElapsedColumn
+from rich.progress import Progress, SpinnerColumn, TextColumn, TimeElapsedColumn
 from rich.text import Text
 from rich import box
 from ultralytics import YOLO
 
 console = Console()
-
 
 def print_config(cfg: dict):
     table = Table(box=box.ROUNDED, show_header=False, border_style="cyan", padding=(0, 2))
@@ -20,7 +18,6 @@ def print_config(cfg: dict):
     for k, v in cfg.items():
         table.add_row(k, str(v))
     console.print(Panel(table, title="[bold cyan]Training Config[/bold cyan]", border_style="cyan"))
-
 
 def print_metrics(metrics):
     table = Table(box=box.SIMPLE, border_style="green", padding=(0, 2))
@@ -42,7 +39,6 @@ def print_metrics(metrics):
     table.add_row("Recall",    f"{rec:.4f}   {bar(rec)}")
 
     console.print(Panel(table, title="[bold green]Validation Results[/bold green]", border_style="green"))
-
 
 def train(
     data="dataset/dataset.yaml",
@@ -120,9 +116,9 @@ def train(
     )
 
     elapsed = time.time() - start
-    console.print(f"\n[dim]Training finished in {elapsed/60:.1f} minutes[/dim]")
+    console.print(f"\n[dim]Training finished in {elapsed/60:.1f} minutes[/dim]\n")
 
-    console.print("\n[bold green]Validating...[/bold green]")
+    console.print("[bold green]Validating...[/bold green]\n")
     metrics = yolo.val(data=data)
     print_metrics(metrics)
 
@@ -137,19 +133,19 @@ def train(
 
     return results
 
-
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--data",     default="dataset/dataset.yaml")
-    parser.add_argument("--model",    default="yolov8n.pt")
-    parser.add_argument("--epochs",   default=50,   type=int)
-    parser.add_argument("--imgsz",    default=640,  type=int)
-    parser.add_argument("--batch",    default=16,   type=int)
-    parser.add_argument("--lr0",      default=0.01, type=float)
-    parser.add_argument("--patience", default=10,   type=int)
-    parser.add_argument("--device",   default="")
-    parser.add_argument("--project",  default="runs/detect")
-    parser.add_argument("--name",     default="emergency_car")
-    parser.add_argument("--resume",   action="store_true")
+    parser.add_argument("--data",     default="dataset/dataset.yaml", help="Path to dataset config file")
+    parser.add_argument("--model",    default="yolov8n.pt",        help="Path to model file")
+    parser.add_argument("--epochs",   default=50,                  type=int, help="Number of training epochs")
+    parser.add_argument("--imgsz",    default=640,                 type=int, help="Image size")
+    parser.add_argument("--batch",    default=16,                  type=int, help="Batch size")
+    parser.add_argument("--lr0",      default=0.01,                type=float, help="Initial learning rate")
+    parser.add_argument("--patience", default=10,                  type=int, help="Patience for early stopping")
+    parser.add_argument("--device",   default="",                   help="Device to use (CPU or GPU)")
+    parser.add_argument("--project",  default="runs/detect",      help="Project name")
+    parser.add_argument("--name",     default="emergency_car",    help="Name of the run")
+    parser.add_argument("--resume",   action="store_true", help="Resume training from the last checkpoint")
     args = parser.parse_args()
+
     train(**vars(args))

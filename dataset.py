@@ -6,7 +6,7 @@ from pathlib import Path
 
 DATASET_ROOT = Path("emergency_dataset_with_label")
 OUTPUT_ROOT  = Path("dataset")
-DATA_DIRS    = ["data 1", "data 2"]
+DATA_DIRS    = ["data1", "data2"]
 
 TRAIN_RATIO  = 0.80
 VAL_RATIO    = 0.10
@@ -109,3 +109,10 @@ test:  test/images
 nc: {len(all_classes)}
 names: {all_classes}
 """
+
+    yaml_path.write_text(yaml_content)
+    print(f"\nWrote {yaml_path.resolve()}")
+
+
+if __name__ == "__main__":
+    merge_and_split()
