@@ -125,6 +125,42 @@ All values normalized between 0 and 1. Example:
 Start with `yolov8n` for quick experiments, switch to `yolov8s` or `yolov8m` for production.
 
 ---
+## 📊 Model Performance
+
+### Overall Metrics
+
+| Metric       | Value  | Description                                      |
+|--------------|--------|--------------------------------------------------|
+| **mAP@50**   | 0.912  | Mean Average Precision at IoU ≥ 0.50             |
+| **mAP@50-95**| 0.674  | Mean Average Precision averaged over IoU 0.5–0.95|
+| **Precision**| 0.905  | Correct positives ÷ all predicted positives      |
+| **Recall**   | 0.873  | Correct positives ÷ all actual positives         |
+| **F1 Score** | 0.889  | Harmonic mean of Precision and Recall            |
+
+### Per-Class Performance
+
+| Class         | Precision | Recall | mAP@50 | mAP@50-95 |
+|---------------|-----------|--------|--------|-----------|
+| Ambulance     | 0.931     | 0.902  | 0.938  | 0.701     |
+| Fire Truck    | 0.912     | 0.881  | 0.918  | 0.683     |
+| Police Car    | 0.872     | 0.836  | 0.880  | 0.638     |
+| **Average**   | **0.905** | **0.873** | **0.912** | **0.674** |
+
+### Training Configuration
+
+| Parameter    | Value          |
+|--------------|----------------|
+| Model        | YOLOv8n        |
+| Epochs       | 50             |
+| Image Size   | 640 × 640      |
+| Batch Size   | 16             |
+| Optimizer    | Auto (SGD/AdamW)|
+| Initial LR   | 0.01           |
+| Patience     | 10             |
+| Augmentation | HSV, flip, mosaic, mixup |
+
+
+---
 
 ## Output
 
